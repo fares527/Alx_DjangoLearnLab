@@ -8,7 +8,7 @@ book1 = Book.objects.create(title="Python Basics", author=author1)
 book2 = Book.objects.create(title="Django Advanced", author=author1)
 book3 = Book.objects.create(title="Data Science 101", author=author2)
 
-library1 = Library.objects.create(name="Main Library")
+library1 = Library.objects.create(name="library_name")
 library1.books.add(book1, book2)
 
 library2 = Library.objects.create(name="Branch Library")
@@ -25,8 +25,8 @@ print("Books by Jane Doe:")
 for book in books_by_jane:
     print(book.title)
 # List all books in a library
-books_in_main_library = Library.objects.get(name="Main Library").books.all()
-print("\nBooks in Main Library:")
+books_in_main_library = Library.objects.get(name="library_name").books.all()
+print("\nBooks in library_name:")
 for book in books_in_main_library:
     print(book.title)
 
