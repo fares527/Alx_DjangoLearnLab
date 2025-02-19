@@ -17,6 +17,7 @@ library2.books.add(book3)
 librarian1 = Librarian.objects.create(name="Alice Johnson", library=library1)
 librarian2 = Librarian.objects.create(name="Bob Williams", library=library2)
 
+
 # Queries
 
 # Query all books by a specific author
@@ -24,9 +25,11 @@ books_by_jane = Book.objects.filter(author__name="Jane Doe")
 print("Books by Jane Doe:")
 for book in books_by_jane:
     print(book.title)
+
 # List all books in a library
-books_in_main_library = Library.objects.get(name="library_name").books.all()
-print("\nBooks in library_name:")
+library_name = "Main Library"  # Use a variable here
+books_in_main_library = Library.objects.get(name=library_name).books.all()
+print(f"\nBooks in {library_name}:") #use f-strings for clarity
 for book in books_in_main_library:
     print(book.title)
 
@@ -34,3 +37,8 @@ for book in books_in_main_library:
 librarian_for_branch_library = Librarian.objects.get(library__name="Branch Library")
 print("\nLibrarian for Branch Library:")
 print(librarian_for_branch_library.name)
+
+#Example of the needed query, even if not used in previous examples.
+library_name_example = "Branch Library"
+library_example = Library.objects.get(name=library_name_example)
+print(f"\nExample Library: {library_example.name}")
