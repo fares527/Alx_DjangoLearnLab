@@ -36,7 +36,7 @@ for book in books_in_main_library:
     print(book.title)
 
 # Retrieve the librarian for a library
-librarian_for_branch_library = Librarian.objects.get(library__name="Branch Library")
+librarian_for_branch_library = Librarian.objects.get(library="Branch Library")
 print("\nLibrarian for Branch Library:")
 print(librarian_for_branch_library.name)
 
