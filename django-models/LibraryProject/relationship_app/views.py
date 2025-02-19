@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from .models import Book
 from django.views.generic import DetailView
+from django.http import HttpResponse
 
 # Create your views here.
-def Book_List(request):
+def list_books(request):
     books = Book.objects.all()
-    context = {'book_list':books}
-    return render(request, 'books/Book_List.html', context)
+    text_list = "\n".join([f"{book.title} by {book.author.name}" for book in books])
+    return HttpResponse(text_list, content_type="text/plain")
 
 
 class LibraryDetailView(DetailView):
