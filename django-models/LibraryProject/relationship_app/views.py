@@ -61,7 +61,7 @@ def profile(request):
 
 
 
-def is_admin(user):
+def admin(user):
     print(f"User: {user}, Authenticated: {user.is_authenticated}")
     if hasattr(user, 'userprofile'):
         print(f"User Role: {user.userprofile.role}")
@@ -71,7 +71,7 @@ def is_admin(user):
         return False
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(admin)
 def admin_view(request):
     print("Admin view accessed")
     return render(request, 'admin_view.html')
@@ -80,12 +80,12 @@ def is_librarian(user):
     return user.is_authenticated and user.userprofile.role == 'Librarian'
 
 @login_required
-@user_passes_test(is_admin)
+@user_passes_test(admin)
 def admin_view(request):
     return render(request, 'admin_view.html')
 
 @login_required
-@user_passes_test(is_librarian)
+@user_passes_test(librarian)
 def librarian_view(request):
     return render(request, 'librarian_view.html')
 
