@@ -3,7 +3,8 @@ from .models import Book
 from django.views.generic import DetailView
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, aauthenticate
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
