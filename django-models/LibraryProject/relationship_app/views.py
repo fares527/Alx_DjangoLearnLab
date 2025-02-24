@@ -41,7 +41,7 @@ def user_login(request):
 
     else:
         form = AuthenticationForm()
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'relationship_app/login.html', {'form': form})
 
 
 def user_logout(request):
@@ -57,7 +57,7 @@ def register(request):
                return redirect('profile')
     else:
         form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})            
+    return render(request, 'relationship_app/register.html', {'form': form})            
 
 
 
