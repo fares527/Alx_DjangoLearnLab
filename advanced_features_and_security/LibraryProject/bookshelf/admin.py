@@ -22,7 +22,7 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 # Register your models here.
-
+admin.site.register(CustomUser, CustomUserAdmin)
 
 @admin.register(Book)  # A more concise way to register the model
 class BookAdmin(admin.ModelAdmin):
