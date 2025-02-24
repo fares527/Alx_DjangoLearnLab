@@ -1,44 +1,52 @@
-from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render, redirect, get_object_or_404
+# LibraryProject/bookshelf/views.py
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
-from .models import Article
-from django.contrib.auth.models import Group
+from .models import Book
 from django.http import HttpResponseForbidden
 
-def article_list(request):
-    articles = Article.objects.all()
-    return render(request, 'app_name/article_list.html', {'articles': articles})
+def book_list(request):
+    """Lists all books."""
+    books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
-@permission_required('app_name.can_create', raise_exception=True)
-def article_create(request):
+def books(request):
+    """Alternative view for listing books (if needed)."""
+    return book_list(request)  # Simply calls book_list
+
+@permission_required('bookshelf.can_create_book', raise_exception=True)
+def book_create(request):
+    """Creates a new book."""
     if request.method == 'POST':
         title = request.POST['title']
-        content = request.POST['content']
-        Article.objects.create(title=title, content=content)
-        return redirect('article_list')
-    return render(request, 'app_name/article_create.html')
+        author = request.POST['author']
+        # ... other fields ...
+        Book.objects.create(title=title, author=author)  # ... other fields ...
+        return redirect('book_list')
+    return render(request, 'bookshelf/book_create.html')
 
-@permission_required('app_name.can_edit', raise_exception=True)
-def article_edit(request, article_id):
-    article = get_object_or_404(Article, pk=article_id)
+@permission_required('bookshelf.can_edit_book', raise_exception=True)
+def book_edit(request, book_id):
+    """Edits an existing book."""
+    book = get_object_or_404(Book, pk=book_id)
     if request.method == 'POST':
-        article.title = request.POST['title']
-        article.content = request.POST['content']
-        article.save()
-        return redirect('article_list')
-    return render(request, 'app_name/article_edit.html', {'article': article})
+        book.title = request.POST['title']
+        book.author = request.POST['author']
+        # ... update other fields ...
+        book.save()
+        return redirect('book_list')
+    return render(request, 'bookshelf/book_edit.html', {'book': book})
 
-@permission_required('app_name.can_delete', raise_exception=True)
-def article_delete(request, article_id):
-    article = get_object_or_404(Article, pk=article_id)
-    article.delete()
-    return redirect('article_list')
+@permission_required('bookshelf.can_delete_book', raise_exception=True)
+def book_delete(request, book_id):
+    """Deletes a book."""
+    book = get_object_or_404(Book, pk=book_id)
+    book.delete()
+    return redirect('book_list')
 
-def article_view(request, article_id):
-    if request.user.has_perm('app_name.can_view'):
-        article = get_object_or_404(Article, pk=article_id)
-        return render(request, 'app_name/article_view.html', {'article': article})
+def book_view(request, book_id):
+    """Views a single book."""
+    if request.user.has_perm('bookshelf.can_view_book'):
+        book = get_object_or_404(Book, pk=book_id)
+        return render(request, 'bookshelf/book_view.html', {'book': book})
     else:
-        return HttpResponseForbidden("You do not have permission to view this article.")
+        return HttpResponseForbidden("You do not have permission to view this book.")
