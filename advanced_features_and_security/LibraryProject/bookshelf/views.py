@@ -3,11 +3,32 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.http import HttpResponseForbidden
+from django.http import HttpResponse
+from .forms import BookForm
+from django.db.models import Q
+
+
+
 
 def book_list(request):
-    """Lists all books."""
-    books = Book.objects.all()
+    query = request.GET.get('q')
+    if query:
+        # Using Django ORM to prevent SQL injection
+        books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    else:
+        books = Book.objects.all()
     return render(request, 'bookshelf/book_list.html', {'books': books})
+
+def form_example(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save() # Automatically handles validation
+            return HttpResponse("Form submitted successfully")
+    else:
+        form = BookForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
+
 
 def books(request):
     """Alternative view for listing books (if needed)."""
