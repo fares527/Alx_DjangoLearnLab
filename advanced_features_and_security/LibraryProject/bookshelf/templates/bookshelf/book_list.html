@@ -1,0 +1,9 @@
+<h1>Book List</h1>
+
+<a href="{% url 'form_example' %}">Add Book</a>
+
+<ul>
+    {% for book in books %}
+    <li>{{ book.title }} by {{ book.author }}</li>
+    {% endfor %}
+</ul>
