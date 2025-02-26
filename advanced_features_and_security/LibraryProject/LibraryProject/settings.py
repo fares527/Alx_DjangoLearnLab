@@ -23,7 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-z5oo!v-rnb4llm1uug+$jz4w=7&rzue)#&80_0sac#!wa8t8^j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+# security setting
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTION = 'DENY'
+SECURE_CONTENT_TYPE_NOSINFF = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = []
 
@@ -71,6 +78,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryProject.wsgi.application'
 
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com",)  # Allow Google Fonts
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com",)
+CSP_IMG_SRC = ("'self'",)
+
+# Add CSP middleware
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Add the CSP middleware
+    'csp.middleware.CSPMiddleware',
+]
+
+CSP_REPORT_URI = '/csp-report/' # optional, report CSP violations
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -100,6 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization
