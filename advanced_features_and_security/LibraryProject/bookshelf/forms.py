@@ -10,3 +10,6 @@ class BookForm(forms.ModelForm):
         title = self.cleaned_data['title']
         # Example: Basic sanitization - remove leading/trailing spaces
         return title.strip()
+    
+class ExampleForm(forms.Form):
+    example_field = forms.CharField(max_length=100)
