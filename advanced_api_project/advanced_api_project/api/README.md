@@ -1,1 +1,1 @@
- a detaile explanation
+this is explanation
