@@ -45,6 +45,7 @@ class BookViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(Book.objects.count(), 2)
         self.client.force_login(user=self.user) #login again
+        self.client.login()
 
     def test_book_update_view_authenticated(self):
         data = {'title': 'Updated Book', 'publication_year': 2026, 'author': self.author.pk}
