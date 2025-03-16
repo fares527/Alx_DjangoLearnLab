@@ -16,9 +16,10 @@ class BookViewTests(APITestCase):
         self.book2 = Book.objects.create(title="Test Book 2", publication_year=2024, author=self.author)
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.token = Token.objects.create(user=self.user)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key) #set auth headers
+        self.client.force_login(user=self.user) #Use force_login for testing session based auth.
 
     def test_book_list_view(self):
+        #This test will pass because the user is logged in
         response = self.client.get(reverse('book-list'))
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
@@ -33,17 +34,17 @@ class BookViewTests(APITestCase):
 
     def test_book_create_view_authenticated(self):
         data = {'title': 'New Book', 'publication_year': 2025, 'author': self.author.pk}
-        response = self.client.post(reverse('book-create'), data, format='json') #add format
+        response = self.client.post(reverse('book-create'), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Book.objects.count(), 3)
 
     def test_book_create_view_unauthenticated(self):
-        self.client.credentials() #remove auth headers
+        self.client.logout() #logout the user
         data = {'title': 'New Book', 'publication_year': 2025, 'author': self.author.pk}
         response = self.client.post(reverse('book-create'), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(Book.objects.count(), 2)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key) #re-add auth headers
+        self.client.force_login(user=self.user) #login again
 
     def test_book_update_view_authenticated(self):
         data = {'title': 'Updated Book', 'publication_year': 2026, 'author': self.author.pk}
@@ -53,11 +54,11 @@ class BookViewTests(APITestCase):
         self.assertEqual(self.book1.title, 'Updated Book')
 
     def test_book_update_view_unauthenticated(self):
-        self.client.credentials()
+        self.client.logout()
         data = {'title': 'Updated Book', 'publication_year': 2026, 'author': self.author.pk}
         response = self.client.put(reverse('book-update', kwargs={'pk': self.book1.pk}), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        self.client.force_login(user=self.user)
 
     def test_book_delete_view_authenticated(self):
         response = self.client.delete(reverse('book-delete', kwargs={'pk': self.book1.pk}))
@@ -65,11 +66,11 @@ class BookViewTests(APITestCase):
         self.assertEqual(Book.objects.count(), 1)
 
     def test_book_delete_view_unauthenticated(self):
-        self.client.credentials()
+        self.client.logout()
         response = self.client.delete(reverse('book-delete', kwargs={'pk': self.book1.pk}))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(Book.objects.count(), 2)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        self.client.force_login(user=self.user)
 
     def test_book_list_view_filter(self):
         response = self.client.get(reverse('book-list') + '?publication_year=2023')
