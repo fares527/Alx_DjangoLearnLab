@@ -23,6 +23,23 @@ in urls.py
     path('logout/', views.logout_view, name='logout_view'),
     path('profile/', views.profile, name='profile'),
 
-
-
 ]
+adding new feature to the blog
+adding CRUD operations
+in views.py 
+1. import ListView, DetailView, CreateView, UpdateView, DeleteView from django.views.generic
+2. import Post models from .models
+3. create a class for each operations:ex:   class PostListView(ListView):
+                                                  model = Post
+                                                  template_name = 'blog/post_list.html'
+4. creating a template file for each operation and put this file in templates/blog
+5. add the urls for these classes in blog/urls.py:
+    path('', views.PostListView.as_view, name='post_list'),
+    path('post/<int:pk>/', views.PostDetailView.as_view, name='post_detail'),
+    path('post/new/', views.PostCreateView.as_view, name='post_new'),
+    path('post/<int:pk>/update/', views.PostUpdateView.as_view, name='post_edit'),
+    path('post/<int:pk>/delete/', views.PostDeleteView.as_view, name='post_delete'),
+
+6. to add authorization we add these feature to create, update, delete
+in viewa.py
+7. import LoginRequiredMixin, UserPassesTestMixin from django.contrib.auth.Mixins
