@@ -6,7 +6,7 @@ from .models import Post, Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
 
 # Create your views here.
 def register(request):
@@ -94,3 +94,8 @@ class CommentUpdataView(UpdateView):
 class CommentDeleteView(DeleteView):
     model = Comment
     template_name = 'blog/comment_delete.html'
+
+
+class CommentCreateView(CreateView):
+    model = Comment
+    template_name = 'blog/comment_create.html'
