@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
-from .forms import CustomUserCreationForm, PostForm
+from .forms import CustomUserCreationForm, PostForm, CommentForm
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Post
+from .models import Post, Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import UpdateView, DeleteView
 
 # Create your views here.
 def register(request):
@@ -84,3 +85,12 @@ class PostDeleteView(DeleteView):
         return self.request.user == Post.author
 
 
+class CommentUpdataView(UpdateView):
+    model = Comment
+    template_name = 'blog/comment_form.html'
+    form_class = CommentForm
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    template_name = 'blog/comment_delete.html'
