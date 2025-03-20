@@ -85,6 +85,21 @@ class PostDeleteView(DeleteView):
         return self.request.user == Post.author
 
 
+def post_detail(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            Comment = form.save()
+            Comment.post = post
+            Comment.author = request.user
+            Comment.save()
+    
+    else:
+        form = CommentForm()
+
+
+
+
 class CommentUpdateView(UpdateView):
     model = Comment
     template_name = 'blog/comment_form.html'
