@@ -43,3 +43,14 @@ in views.py
 6. to add authorization we add these feature to create, update, delete
 in viewa.py
 7. import LoginRequiredMixin, UserPassesTestMixin from django.contrib.auth.Mixins
+adding new feature comments 
+first create a model named comment in models.py and make migration to create the database
+second creating a CommentForm in forms.py
+third creating CRUD operations
+in views.py
+1. import CreateView, UpdateView, DeleteView from django.viewa.generics.edit
+2. creating function  for displaying blog post detail 
+3. creating class for adding a new comment
+4. creating classes for CRUD operations
+in templates/blog creating the html files for each class
+adding the paths in blog/urls.py
