@@ -97,7 +97,17 @@ def post_detail(request):
     else:
         form = CommentForm()
 
-
+def post_detail(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            Comment = form.save()
+            Comment.post = Post
+            Comment.author = request.user
+            Comment.save()
+    
+    else:
+        form = CommentForm()
 
 
 class CommentUpdateView(UpdateView):
