@@ -85,7 +85,7 @@ class PostDeleteView(DeleteView):
         return self.request.user == Post.author
 
 
-class CommentUpdataView(UpdateView):
+class CommentUpdateView(UpdateView):
     model = Comment
     template_name = 'blog/comment_form.html'
     form_class = CommentForm
