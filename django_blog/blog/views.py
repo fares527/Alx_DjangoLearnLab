@@ -130,7 +130,7 @@ def postsearch(request):
     query = request.GET.get('q')
     if query:
         posts = Post.objects.filter(
-            Q(title__iconatains=query)    |
+            Q(title__icontains=query)    |
             Q(content__icontains=query)   |
             Q(tags__name__icontains=query)
 
