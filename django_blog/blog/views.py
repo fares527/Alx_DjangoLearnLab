@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
-
+from django.db.models import Q
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -90,7 +90,7 @@ def post_detail(request):
         form = CommentForm(request.POST)
         if form.is_valid():
             Comment = form.save()
-            Comment.post = post
+            Comment.post = Post
             Comment.author = request.user
             Comment.save()
     
@@ -124,3 +124,18 @@ class CommentDeleteView(DeleteView):
 class CommentCreateView(CreateView):
     model = Comment
     template_name = 'blog/comment_create.html'
+
+
+def postsearch(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title_iconatains=query)    |
+            Q(content_icontains=query)   |
+            Q(tags__name__icontains=query)
+
+
+        ).distinct()
+
+    else:
+        posts = Post.objects.all()
