@@ -5,7 +5,7 @@ from models import Post, Comment, User
 
 
 # Create your views here.
-class PostViewSet(viewsets.ViewSet):
+class PostViewSet(viewsets.ModelViewSet):
     #queryset = Post.objects.all()
    # serializer_class = PostSerializer
 
@@ -26,7 +26,7 @@ class PostViewSet(viewsets.ViewSet):
         serializer_class = PostSerializer
 
 
-class CommentViewSet(viewsets.ViewSet):
+class CommentViewSet(viewsets.ModelViewSet):
     def Create(self):
         queryset = Post.objects.all()
         serializer_class = PostSerializer
