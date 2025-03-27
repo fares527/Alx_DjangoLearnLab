@@ -51,7 +51,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 @api_view('POST')
 @permission_classes([permissions.IsAuthenticated])
-def follow_user(request, user_id):
+def following_users(request, user_id):
     user_to_follow = get_object_or_404(CustomUser, id=user_id)
     if request.user != user_to_follow:
         request.user.following.add(user_to_follow)
@@ -74,7 +74,8 @@ class FeedView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         followed_users = user.following.all()
-        return Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
+   
 
  
 
