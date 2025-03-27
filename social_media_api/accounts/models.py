@@ -21,3 +21,7 @@ class CustomUser(AbstractUser):
         related_name='customuser_set',
         related_query_name='user',
     )
+
+    
+    following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
+    
