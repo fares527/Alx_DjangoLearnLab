@@ -9,7 +9,7 @@ from rest_framework.response import Response
 # Create your views here.
 User = get_user_model
 class UserCreate():
-    queryset = User.object.all()
+    queryset = CustomUser.object.all()
     serializer_class = UserSerializer
 
 
