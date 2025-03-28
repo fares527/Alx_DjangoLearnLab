@@ -94,7 +94,7 @@ def like_post(request, pk):
     if Like.objects.filter(post=post, user=user).exists():
         return Response({'message': 'Post already liked'}, status=status.HTTP_400_BAD_REQUEST)
 
-    Like.objects.get_or_create(post=post, user=request.user)
+    Like.objects.get_or_create(user=request.user, post=post)
 
     Notification.objects.create(
         recipient=post.author,
