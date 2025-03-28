@@ -88,13 +88,13 @@ from notifications.models import Notification
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     user = request.user
 
     if Like.objects.filter(post=post, user=user).exists():
         return Response({'message': 'Post already liked'}, status=status.HTTP_400_BAD_REQUEST)
 
-    Like.objects.create(post=post, user=user)
+    Like.objects.get_or_create(post=post, user=request.user)
 
     Notification.objects.create(
         recipient=post.author,
