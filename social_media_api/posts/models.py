@@ -25,3 +25,7 @@ class Comment(models.Model):
     created_at = models.TextField()
     updated_at = models.DateField()
 
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+
